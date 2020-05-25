@@ -11,7 +11,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 def BA(X,beta,N):    
     epochs = 10000
     precision = 1e-4
-    optimizer = tf.keras.optimizers.SGD(learning_rate=.1)
 
     # UNIFORM DISCRETIZATION OF ran(X)
     Xhat = tf.constant(np.linspace(0,1,N))   # => q below is a dist. over xhat=[0,.01,...,.99,1] 
