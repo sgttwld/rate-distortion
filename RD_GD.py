@@ -1,3 +1,8 @@
+"""
+Rate-distortion algorithm using gradient descent
+Author: Sebastian Gottwald
+Project: https://github.com/sgttwld/rate-distortion
+"""
 import numpy as np
 import tensorflow as tf
 import os,time

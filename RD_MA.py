@@ -1,3 +1,8 @@
+"""
+Rate-distortion algorithms using the mapping approach by Rose
+Author: Sebastian Gottwald
+Project: https://github.com/sgttwld/rate-distortion
+"""
 import numpy as np
 import tensorflow as tf
 import os, time
