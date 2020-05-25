@@ -89,7 +89,7 @@ ax = pd.DataFrame(r['q']).plot.bar(title=r'Distribution of reconstruction $\hat{
 ax.legend(['beta={}\nN={} \n{} iterations\n{:.2f} seconds'.format(beta,len(r['q']),r['episodes'],r['elapsed'])])
 sns.despine()
 xticks = np.arange(0,len(r['q']),8)
-plt.xticks(xticks,r['xhat'][xticks])
+plt.xticks(xticks,np.round(r['xhat'],2)[xticks])
 st.pyplot()
 
 r"""
@@ -111,7 +111,7 @@ ax = pd.DataFrame(r['q']).plot.bar(title=r'Distribution of reconstruction $\hat{
 ax.legend(['beta={}\nN={}\n{} iterations\n{:.2f} seconds'.format(beta,len(r['q']),r['episodes'],r['elapsed'])])
 sns.despine()
 xticks = np.arange(0,len(r['q']),8)
-plt.xticks(xticks,r['xhat'][xticks])
+plt.xticks(xticks,np.round(r['xhat'],2)[xticks])
 st.pyplot()
 
 r"""
