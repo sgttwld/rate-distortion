@@ -72,20 +72,15 @@ $F_{RD}(\ \cdot \ ) = F_{aux}(\ \cdot \ ,\mathbb E_X[q(\hat X|X)])$.
 """
 
 r"""
-## 1. Blahut-Arimoto
-When the Blahut-Arimoto algorithm is applied to rate-distortion, the auxiliary Lagrangian $F_{aux}$ is 
-optimized alternatingly with respect to $q(\hat X|X)$ and $q(\hat X)$ by iterating the closed-form solutions
+## 1. Blahut-Arimoto ([RD_BA.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_BA.py))
+When the Blahut-Arimoto algorithm is applied to rate-distortion, the auxiliary Lagrangian $F_{aux}$ is optimized alternatingly with respect to $q(\hat X|X)$ and $q(\hat X)$ by iterating the closed-form solutions
 $$
 q^\ast(\hat X|X=x) = \frac{1}{Z(x)} q(\hat X) \, e^{-\beta d(x,\hat X)} \ , \ \ 
     q^\ast(\hat X) = \mathbb E_X[q(\hat X|X)]
 $$
 where $Z(x) := \mathbb E_{q(\hat X)}[e^{-\beta d(x,\hat X)}]$. 
 
-This is often done by __discretizing the range of $X$__ (here the interval $[0,1]$) __into $N$ fixed parts__, 
-so that $\hat X$ has finite range (one value for each interval) and its probability distribution 
-can be represented by an $N$-dimensional probability vector. The Blahut-Arimoto algorithm then iterates 
-between (i) calculating the Boltzmann distribution $q^\ast(\hat X|X=x)$ for each sample $x$, and (ii) 
-averaging the results over all samples in the dataset to obtain $q(\hat X)$.
+This is often done by __discretizing the range of $X$__ (here the interval $[0,1]$) __into $N$ fixed parts__, so that $\hat X$ has finite range (one value for each interval) and its probability distribution can be represented by an $N$-dimensional probability vector. The Blahut-Arimoto algorithm then iterates between (i) calculating the Boltzmann distribution $q^\ast(\hat X|X=x)$ for each sample $x$, and (ii) averaging the results over all samples in the dataset to obtain $q(\hat X)$.
 """
 
 # Blahut-Arimoto
@@ -98,7 +93,7 @@ plt.xticks(xticks,r['xhat'][xticks])
 st.pyplot()
 
 r"""
-## 2. Gradient descent
+## 2. Gradient descent ([RD_GD.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_GD.py))
 Here, we use that evaluating the auxiliary free energy $F_{aux}$ at the Boltzmann distribution 
 $q^\ast(\hat X|X)$ results in
 $$
@@ -125,7 +120,7 @@ Note that the above results imply that for our choice of $\beta=15$ the optimal 
 
 
 r"""
-## 3. Mapping approach
+## 3. Mapping approach ([RD_MA.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_MA.py))
 
 The [mapping approach](https://ieeexplore.ieee.org/document/340468) to 
 rate-distortion makes use of the Borel isomorphism theorem, which allows to replace the expectation with respect to $q(\hat{X})$ by integration over $u\in [0,1]$ (with respect to the Lebesgue measure) and where 

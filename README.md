@@ -1,5 +1,11 @@
 # Rate-distortion: _Blahut-Arimoto vs. gradient descent vs. mapping approach_
-Tensorflow (v2) implementations of different ways to calculate Shannon's rate-distortion trade-off.
 
-[View the notebook](https://nbviewer.jupyter.org/github/sgttwld/rate-distortion/blob/master/rate-distortion_nb.ipynb) (using nbviewer)
+This repository contains implementations (using tensorflow v2) of 4 different algorithms to determine the optimal Shannon rate-distortion trade-off for given set of samples from a continuous source,
+
+* [RD_BA.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_MA.py): Blahut-Arimoto algorithm.
+* [RD_GD.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_MA.py): Direct optimization using gradient descent.
+* [RD_MA.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_MA.py): Two different versions (_direct_ and _iterative_ optimization) of the mapping approach by Rose.
+
+## [View the notebook](https://nbviewer.jupyter.org/github/sgttwld/rate-distortion/blob/master/rate-distortion_nb.ipynb) 
+for an explanation of each algorithm. 
 

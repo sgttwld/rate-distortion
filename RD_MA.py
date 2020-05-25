@@ -9,9 +9,13 @@ def d(x,y,k=1):
 
 
 def MA(X,beta,N):
+    """
+    direct optimization of the objective function of the mapping approach
+    """
     epochs = 10000
     precision = 1e-4
     optimizer = tf.keras.optimizers.Adam(learning_rate=.1)
+
     # objective and gradients
     @tf.function 
     def opt(y,X):
@@ -47,9 +51,12 @@ def MA(X,beta,N):
 
 
 def MA_iter(X,beta,N):
+    """
+    alternating optimization of the objective function of the mapping approach
+    """
     epochs = 10000
     precision = 1e-4
-    
+
     # tf variable
     y = tf.Variable(np.random.uniform(0,1,size=(N)))
 

@@ -39,7 +39,7 @@ def GD(X,beta,N):
     t1 = time.time()
 
     return {
-        'xhat': np.round(Xhat.numpy(),2),
+        'xhat': Xhat.numpy(),
         'q': softmax(q).numpy(), 
         'episodes': i, 
         'elapsed': t1-t0,
