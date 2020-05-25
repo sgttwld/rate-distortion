@@ -8,6 +8,9 @@ import tensorflow as tf
 import os, time
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
+def d(x,y):
+    return (tf.expand_dims(x,1)-tf.expand_dims(y,0))**2           
+
 def BA(X,beta,N):    
     epochs = 10000
     precision = 1e-4
@@ -20,7 +23,7 @@ def BA(X,beta,N):
     q = tf.Variable(init/np.sum(init))
 
     # distortion(Xhat,X)
-    dist = (tf.expand_dims(Xhat,0)-tf.expand_dims(X,1))**2
+    dist = d(X,Xhat)
 
     t0 = time.time()
     # iterate

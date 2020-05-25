@@ -8,7 +8,7 @@ import tensorflow as tf
 import os,time
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
-def d(x,y,k=1):
+def d(x,y):
     return (tf.expand_dims(x,1)-tf.expand_dims(y,0))**2           
 
 def GD(X,beta,N):

@@ -9,7 +9,7 @@ import os, time
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
 
-def d(x,y,k=1):
+def d(x,y):
     return (tf.expand_dims(x,1)-tf.expand_dims(y,0))**2           
 
 
@@ -69,7 +69,7 @@ def MA_iter(X,beta,N):
     for i in range(epochs):
         y0 = y.numpy()
         # 2  boltzmann dist
-        expdist = tf.exp(-beta*(tf.expand_dims(y,0)-tf.expand_dims(X,1))**2)
+        expdist = tf.exp(-beta*d(X,y))
         post = expdist/tf.expand_dims(tf.reduce_sum(expdist,axis=1),1)
         # 1  conditional expectation
         y.assign(tf.reduce_mean(tf.expand_dims(X,1)*post,axis=0)/tf.reduce_mean(post,axis=0))
