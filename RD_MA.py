@@ -46,7 +46,7 @@ def MA(X,beta,N):
     D = tf.reduce_mean(tf.reduce_mean(tf.exp(-beta*d(X,y))*d(X,y),axis=1)/Z)
     R = -beta*D-tf.reduce_mean(tf.math.log(Z))
     return {
-        'Xhat': y.numpy(), 
+        'xhat': y.numpy(), 
         'Distortion': D.numpy(), 
         'Rate': R.numpy(),
         'episodes': i, 
@@ -81,7 +81,7 @@ def MA_iter(X,beta,N):
     D = tf.reduce_mean(tf.reduce_mean(tf.exp(-beta*d(X,y))*d(X,y),axis=1)/Z)
     R = -beta*D-tf.reduce_mean(tf.math.log(Z))
     return {
-        'Xhat': y.numpy(), 
+        'xhat': y.numpy(), 
         'Distortion': D.numpy(), 
         'Rate': R.numpy(),
         'episodes': i, 

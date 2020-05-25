@@ -41,4 +41,5 @@ def BA(X,beta,N):
         'q': q.numpy(), 
         'episodes': i, 
         'elapsed': t1-t0,
+        'beta': beta,
         }

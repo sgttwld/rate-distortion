@@ -48,4 +48,5 @@ def GD(X,beta,N):
         'q': softmax(q).numpy(), 
         'episodes': i, 
         'elapsed': t1-t0,
+        'beta': beta,
         }

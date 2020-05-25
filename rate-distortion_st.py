@@ -11,12 +11,18 @@ from RD_MA import MA, MA_iter
 # plot settings
 sns.reset_defaults()
 sns.set(
-    rc={'figure.figsize':(7,3)}, 
-    style="white" # nicer layout
-)
-plt.rc('axes', titlesize=10)     # fontsize of the axes title
-plt.rc('axes', labelsize=10)    # fontsize of the x and y labels
-plt.rc('legend', fontsize=9)    # legend fontsize
+    rc={
+        'figure.figsize': (7,3),
+        'axes.titlesize': 10,
+        'axes.labelsize': 10,
+        'legend.fontsize': 9,
+        'xtick.labelsize': 8,
+        'ytick.labelsize': 8,
+        'axes.spines.top': False,
+        'axes.spines.right': False,
+    }, 
+    style="white"
+    )
 
 import streamlit as st
 BA,GD,MA,MA_iter = st.cache(BA), st.cache(GD), st.cache(MA), st.cache(MA_iter)
@@ -26,8 +32,8 @@ def get_source(num):
     return tf.constant( np.random.beta(a=2,b=2,size=(num)) ) 
 
 def legend_string(r):
-    return 'beta={}\nN={}\n{} iterations\n{:.2f} seconds'.format(
-        r['beta'],len(r['Xhat']),r['episodes'],r['elapsed'])
+    return ['beta={}\nN={}\n{} iterations\n{:.2f} seconds'.format(
+        r['beta'],len(r['xhat']),r['episodes'],r['elapsed'])]
 
 # parameters
 beta = 15.0
@@ -41,9 +47,8 @@ Consider a continuous source $X$, for example distributed according to a beta di
 
 # source
 X = get_source(num)
-ax = pd.DataFrame(X).plot.hist(bins=20,alpha=.9,fontsize=8,title='Source frequency')
+ax = pd.DataFrame(X).plot.hist(bins=20,title='Source frequency')
 ax.legend([r'X ~ Beta(2,2)'])
-sns.despine()
 st.pyplot()
 
 r"""
@@ -60,20 +65,20 @@ $$
 is the mutual information between the source $X$ and the reconstruction $\hat X$. All three algorithms 
 make use of the fact that the rate-distortion Lagrangian $F_{RD}$ can be written as the optimum
 $$
-F_{RD}(q(\hat X|X)) = \min_{q(\hat X)} F_{aux}(q(\hat X|X), q(\hat X))
+F_{RD}(q(\hat X|X)) = \min_{q(\hat X)} F^{aux}_{RD}(q(\hat X|X), q(\hat X))
 $$
 where the auxiliary Lagrangian is defined as
 $$
-F_{aux}(q(\hat X|X), q(\hat X)):= \mathbb E[d(X,\hat X)] + \tfrac{1}{\beta} \, \mathbb E_X [D_{KL}(q(\hat X|X)\| q(\hat X))] ,
+F^{aux}_{RD}(q(\hat X|X), q(\hat X)):= \mathbb E[d(X,\hat X)] + \tfrac{1}{\beta} \, \mathbb E_X [D_{KL}(q(\hat X|X)\| q(\hat X))] ,
 $$
 since the optimal reconstruction distribution $q^\ast(\hat X)$ is simply given by the marginal 
 $\mathbb E_X[q(\hat X|X)],$ and by construction we have 
-$F_{RD}(\ \cdot \ ) = F_{aux}(\ \cdot \ ,\mathbb E_X[q(\hat X|X)])$. 
+$F_{RD}(\, \cdot \, ) = F^{aux}_{RD}(\, \cdot \, ,\mathbb E_X[q(\hat X|X)])$. 
 """
 
 r"""
 ## 1. Blahut-Arimoto ([RD_BA.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_BA.py))
-When the Blahut-Arimoto algorithm is applied to rate-distortion, the auxiliary Lagrangian $F_{aux}$ is optimized alternatingly with respect to $q(\hat X|X)$ and $q(\hat X)$ by iterating the closed-form solutions
+When the Blahut-Arimoto algorithm is applied to rate-distortion, the auxiliary Lagrangian $F^{aux}_{RD}$ is optimized alternatingly with respect to $q(\hat X|X)$ and $q(\hat X)$ by iterating the closed-form solutions
 $$
 q^\ast(\hat X|X=x) = \frac{1}{Z(x)} q(\hat X) \, e^{-\beta d(x,\hat X)} \ , \ \ 
     q^\ast(\hat X) = \mathbb E_X[q(\hat X|X)]
@@ -85,19 +90,18 @@ This is often done by __discretizing the range of $X$__ (here the interval $[0,1
 
 # Blahut-Arimoto
 r = BA(X,beta,N=40)
-ax = pd.DataFrame(r['q']).plot.bar(title=r'Distribution of reconstruction $\hat{X}$',rot=0,fontsize=8)
-ax.legend(['beta={}\nN={} \n{} iterations\n{:.2f} seconds'.format(beta,len(r['q']),r['episodes'],r['elapsed'])])
-sns.despine()
+ax = pd.DataFrame(r['q']).plot.bar(title=r'Distribution of reconstruction $\hat{X}$',rot=0)
+ax.legend(legend_string(r))
 xticks = np.arange(0,len(r['q']),8)
 plt.xticks(xticks,np.round(r['xhat'],2)[xticks])
 st.pyplot()
 
 r"""
 ## 2. Gradient descent ([RD_GD.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_GD.py))
-Here, we use that evaluating the auxiliary free energy $F_{aux}$ at the Boltzmann distribution 
+Here, we use that evaluating the auxiliary free energy $F^{aux}_{RD}$ at the Boltzmann distribution 
 $q^\ast(\hat X|X)$ results in
 $$
-F_{GD}(q(\hat X)) := F_{aux}(q^\ast(\hat{X}|X), q(\hat{X})) 
+F_{GD}(q(\hat X)) := F^{aux}_{RD}(q^\ast(\hat{X}|X), q(\hat{X})) 
 = -\frac{1}{\beta}\mathbb{E}_X \Big[ \log \mathbb E_{q(\hat{X})} [e^{-\beta d(X,\hat{X})}]  \Big].
 $$
 which can be optimized with respect to $q(\hat{X})$ by using gradient descent. In particular, exactly as in 
@@ -107,9 +111,8 @@ problem over probability vectors.
 """
 
 r = GD(X,beta,N=40)
-ax = pd.DataFrame(r['q']).plot.bar(title=r'Distribution of reconstruction $\hat{X}$',rot=0,fontsize=8)
-ax.legend(['beta={}\nN={}\n{} iterations\n{:.2f} seconds'.format(beta,len(r['q']),r['episodes'],r['elapsed'])])
-sns.despine()
+ax = pd.DataFrame(r['q']).plot.bar(title=r'Distribution of reconstruction $\hat{X}$',rot=0)
+ax.legend(legend_string(r))
 xticks = np.arange(0,len(r['q']),8)
 plt.xticks(xticks,np.round(r['xhat'],2)[xticks])
 st.pyplot()
@@ -145,35 +148,31 @@ $$
 where $\{\hat x_i\}_{i=1}^N$ is the fixed finite range of $\hat X$ and $q_i:=q(\hat x_i)$ are the optimization 
 variables in the above approaches, whereas $y_i = y(b_i)$ are the optimization variables in the mapping 
 approach. In particular, here the __possible values of the reconstruction $\hat X$ can perfectly adapt to the 
-source $X$__, whereas in the other approaches the possible values are fixed by the discretization.  
+source $X$__, whereas in the other approaches the possible values are fixed by the discretization. We have implemented two different variants of the mapping approach:
 """
 
 r"""
-We have implemented two different variants of the mapping approach:
-
 __Direct optimization.__ Here we optimize the discretized version of $F_M$,
 $$
-\tilde F_M(y) := - \frac{1}{\beta} \mathbb E_X\Big[ \log \sum_{i=1}^N e^{-\beta d(X,y_i)} \Big] ,
+F^{disc}_M(y) := - \frac{1}{\beta} \mathbb E_X\Big[ \log \sum_{i=1}^N e^{-\beta d(X,y_i)} \Big] ,
 $$
 directly with respect to $y=(y_i)_{i=1}^N$ using gradient descent. 
 """
 
 r = MA(X,beta,N=10)
-ax = pd.DataFrame(r['Xhat']).plot.hist(bins=100,range=(0,1),title=r'Frequency of reconstruction $\hat X$',fontsize=8)
-ax.legend(['beta={}\nN={}\n{} iterations\n{:.2f} seconds'.format(r['beta'],len(r['Xhat']),r['episodes'],r['elapsed'])])
-sns.despine()
+ax = pd.DataFrame(r['xhat']).plot.hist(bins=100,range=(0,1),title=r'Frequency of reconstruction $\hat X$')
+ax.legend(legend_string(r))
 plt.xlim([0,1])
 st.pyplot()
 
 r"""
-__Iterative optimization.__ This variant is similar to the Blahut-Arimoto algorithm above, in that it makes use of the fact that the 
-discretized version of $F_M(y)$ can be written as 
+__Iterative optimization.__ This variant is similar to the Blahut-Arimoto algorithm above, in that it makes use of the fact that the discretized version of $F_M(y)$ can be written as 
 $$
-\tilde F_M(y) = \min_{q(I|X)} F'_{aux}(y,q(I|X))
+F^{disc}_M(y) = \min_{q(I|X)} F^{aux}_M(y,q(I|X))
 $$
 with the auxiliary Lagrangian (see e.g. [Gottwald, Braun 2020](https://arxiv.org/abs/2004.11763))
 $$
-F'_{aux}(y,q(I|x)) := \mathbb E_{X} \Big[ \mathbb E_{q(I|X)}[d(X,y_I)] + \tfrac{1}{\beta} D_{KL}(q(I|X)\|\tfrac{1}{N})\Big].
+F^{aux}_M(y,q(I|x)) := \mathbb E_{X} \Big[ \mathbb E_{q(I|X)}[d(X,y_I)] + \tfrac{1}{\beta} D_{KL}(q(I|X)\|\tfrac{1}{N})\Big].
 $$
 Minimizing $F'_{aux}$ separately in each argument yields the closed-form solutions 
 $$
@@ -187,8 +186,7 @@ are different from the direct optimization above.
 
 # Mapping approach (iterative algorithm)
 r = MA_iter(X,beta,N=10)
-ax = pd.DataFrame(r['Xhat']).plot.hist(bins=100,range=(0,1),title=r'Frequency of reconstruction $\hat X$',fontsize=8)
-ax.legend(['beta={}\nN={}\n{} iterations\n{:.2f} seconds'.format(r['beta'],len(r['Xhat']),r['episodes'],r['elapsed'])])
-sns.despine()
+ax = pd.DataFrame(r['xhat']).plot.hist(bins=100,range=(0,1),title=r'Frequency of reconstruction $\hat X$')
+ax.legend(legend_string(r))
 plt.xlim([0,1])
 st.pyplot()
