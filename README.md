@@ -6,4 +6,4 @@ This repository contains implementations (using tensorflow v2) of 4 different al
 * [RD_GD.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_MA.py): Direct optimization using gradient descent.
 * [RD_MA.py](https://github.com/sgttwld/rate-distortion/blob/master/RD_MA.py): Two different versions (_direct_ and _iterative_ optimization) of the mapping approach by Rose.
 
-### View the [notebook](https://nbviewer.jupyter.org/github/sgttwld/rate-distortion/blob/master/rate-distortion_nb.ipynb) (using nbviewer) for an explanation of each algorithm. 
+### View the [notebook](https://nbviewer.jupyter.org/github/sgttwld/rate-distortion/blob/master/rate-distortion_notebook.ipynb) (using nbviewer) for an explanation of each algorithm. 
