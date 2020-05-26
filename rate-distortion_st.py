@@ -160,7 +160,7 @@ directly with respect to $y=(y_i)_{i=1}^N$ using gradient descent.
 """
 
 r = MA(X,beta,N=10)
-ax = pd.DataFrame(r['xhat']).plot.hist(bins=100,range=(0,1),title=r'Frequency of reconstruction $\hat X$')
+ax = pd.DataFrame(r['xhat']).plot.hist(bins=100,range=(0,1),title=r'Frequency of $y_i$')
 ax.legend(legend_string(r))
 plt.xlim([0,1])
 st.pyplot()
@@ -186,7 +186,7 @@ are different from the direct optimization above.
 
 # Mapping approach (iterative algorithm)
 r = MA_iter(X,beta,N=10)
-ax = pd.DataFrame(r['xhat']).plot.hist(bins=100,range=(0,1),title=r'Frequency of reconstruction $\hat X$')
+ax = pd.DataFrame(r['xhat']).plot.hist(bins=100,range=(0,1),title=r'Frequency of $y_i$')
 ax.legend(legend_string(r))
 plt.xlim([0,1])
 st.pyplot()
