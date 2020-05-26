@@ -18,7 +18,7 @@ def MA(X,beta,N):
     direct optimization of the objective function of the mapping approach
     """
     epochs = 10000
-    precision = 1e-4
+    precision = 1e-5
     optimizer = tf.keras.optimizers.Adam(learning_rate=.1)
 
     # objective and gradients
@@ -47,8 +47,8 @@ def MA(X,beta,N):
     R = -beta*D-tf.reduce_mean(tf.math.log(Z))
     return {
         'xhat': y.numpy(), 
-        'Distortion': D.numpy(), 
-        'Rate': R.numpy(),
+        'distortion': D.numpy(), 
+        'rate': R.numpy()/np.log(2),
         'episodes': i, 
         'elapsed': t1-t0,
         'beta': beta,
@@ -82,8 +82,8 @@ def MA_iter(X,beta,N):
     R = -beta*D-tf.reduce_mean(tf.math.log(Z))
     return {
         'xhat': y.numpy(), 
-        'Distortion': D.numpy(), 
-        'Rate': R.numpy(),
+        'distortion': D.numpy(), 
+        'rate': R.numpy()/np.log(2),
         'episodes': i, 
         'elapsed': t1-t0,
         'beta': beta,

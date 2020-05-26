@@ -43,8 +43,15 @@ def GD(X,beta,N):
             break
     t1 = time.time()
 
+    qexp = tf.expand_dims(softmax(q),0)*tf.exp(-beta*d(X,Xhat))
+    Z = tf.reduce_sum(qexp,axis=1)
+    D = tf.reduce_mean(tf.reduce_sum(qexp*d(X,Xhat),axis=1)/Z)
+    R = -beta*D-tf.reduce_mean(tf.math.log(Z))
+
     return {
         'xhat': Xhat.numpy(),
+        'distortion': D.numpy(),
+        'rate': R.numpy()/np.log(2),
         'q': softmax(q).numpy(), 
         'episodes': i, 
         'elapsed': t1-t0,
