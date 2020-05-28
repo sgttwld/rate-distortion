@@ -8,3 +8,4 @@ This repository contains implementations (using tensorflow v2) of 4 different al
 
 ### View the [notebook](https://nbviewer.jupyter.org/github/sgttwld/rate-distortion/blob/master/rate-distortion_nb.ipynb) (using nbviewer) for an explanation of each algorithm. 
 
+_Note:_ For a combination of the Blahut-Arimoto algorithm and the mapping approach, resulting in a more efficient algorithm, see [RDFC (rate-distortion-with-fixed-cardinality)](https://github.com/sgttwld/rate-distortion-with-fixed-cardinality).

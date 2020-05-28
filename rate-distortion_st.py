@@ -176,7 +176,7 @@ F^{aux}_M(y,q(I|x)) := \mathbb E_{X} \Big[ \mathbb E_{q(I|X)}[d(X,y_I)] + \tfrac
 $$
 Minimizing $F'_{aux}$ separately in each argument yields the closed-form solutions 
 $$
-q^\ast(I|X=x) = \frac{e^{-\beta d(x,y_i)}}{\sum_j e^{-\beta d(x,y_j)}} \ , \ \ y^\ast_i = E[X|I{=}i] = \frac{\mathbb E_X[X q(i|X)]}{E_X[q(i|X)]}
+q^\ast(i|X=x) = \frac{e^{-\beta d(x,y_i)}}{\sum_j e^{-\beta d(x,y_j)}} \ , \ \ y^\ast_i = E[X|I{=}i] = \frac{\mathbb E_X[X q(i|X)]}{E_X[q(i|X)]}
 $$
 where the solution for $y^\ast$ is only valid for Bregman distortion measures (see e.g. 
 [Banerjee 2005](https://ecommons.cornell.edu/bitstream/handle/1813/9264/TR001387.pdf?sequence=1)). Iterating these
